@@ -1,21 +1,30 @@
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/list.h"
-#include <freertos/semphr.h>
-TimerHandle_t blink_timer;
+#include "esp_timer.h"
 #define buzzer_pin 32
+esp_timer_handle_t my_timer;
+void toggleBuzzer(){
+  static bool buzzerState = false;
+  buzzerState = !buzzerState;
+  digitalWrite(buzzer_pin, buzzerState);
+}
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   pinMode(buzzer_pin,OUTPUT);
 
+  const esp_timer_create_args_t timer_args = {
+    .callback = &toggleBuzzer,   
+    .arg = NULL,              
+    .dispatch_method = ESP_TIMER_TASK,
+    .name = "my_timer"       
+  };
+
+  // Création du timer
+  esp_timer_create(&timer_args, &my_timer);
+
+  esp_timer_start_periodic(my_timer, 2*500000);
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  digitalWrite(buzzer_pin,HIGH);
-  delay(3000);
-  digitalWrite(buzzer_pin,LOW);
-  delay(2000);
 
 }

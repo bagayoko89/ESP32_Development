@@ -120,3 +120,5 @@
 26522	27306	7780223613883957	C:/Users/DELL/Desktop/ESP32_Development/FreeRTOS_ESP32/blink/build/bootloader/.bin_timestamp	4669a83bfe2c4bb9
 27306	27499	7780223614040218	esp-idf/esptool_py/CMakeFiles/bootloader_check_size	5a2db9c384fa1ad7
 27306	27499	7780223614040218	C:/Users/DELL/Desktop/ESP32_Development/FreeRTOS_ESP32/blink/build/bootloader/esp-idf/esptool_py/CMakeFiles/bootloader_check_size	5a2db9c384fa1ad7
+80	347	7780416754458017	esp-idf/esptool_py/CMakeFiles/bootloader_check_size	5a2db9c384fa1ad7
+80	347	7780416754458017	C:/Users/DELL/Desktop/ESP32_Development/FreeRTOS_ESP32/blink/build/bootloader/esp-idf/esptool_py/CMakeFiles/bootloader_check_size	5a2db9c384fa1ad7

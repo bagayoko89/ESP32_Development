@@ -1,0 +1,2 @@
+source C:/Users/DELL/Desktop/ESP32_Development/FreeRTOS_ESP32/blink/build/bootloader/gdbinit/symbols
+source C:/Users/DELL/Desktop/ESP32_Development/FreeRTOS_ESP32/blink/build/bootloader/gdbinit/connect

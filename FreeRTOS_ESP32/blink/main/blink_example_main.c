@@ -12,16 +12,10 @@
 #include "driver/gpio.h"
 
 #define LED_PIN 33
-int i=0;
+TaskHandle_t task_handle_blink = NULL;
 
-void TAskA(void *pvParameters1){
-    while(1){
-        printf("Task running on Core %d\n",xPortGetCoreID());
-        vTaskDelay(pdMS_TO_TICKS(1000));
-    }
-}
-
-void TAskB(void *pvParameters2){
+void blink_task(void *pvParameters){
+    int i=0;
     gpio_reset_pin(LED_PIN);
     gpio_set_direction(LED_PIN, GPIO_MODE_OUTPUT);
     while(1){
@@ -29,21 +23,28 @@ void TAskB(void *pvParameters2){
         vTaskDelay(pdMS_TO_TICKS(500));
         gpio_set_level(LED_PIN, 0);
         vTaskDelay(pdMS_TO_TICKS(500));
+        printf("count=%d\n",i);
+        i++;
+        if(i>=10){
+            printf("Task deleting itself...\n");
+            vTaskDelete(NULL);
+        }
     }
 }
 
-void TAskC(void *pvParameters3){
-    while(1){
-        printf("(count=%d)\n",i);
-        vTaskDelay(pdMS_TO_TICKS(1000));
-        i++;
+void control_task(void *pvParameters3){
+    printf("control task running ...\n");
+    vTaskDelay(pdMS_TO_TICKS(5000));
+    if(task_handle_blink!=NULL){
+        printf("control task deleting blink Task ...\n");
+        vTaskDelete(task_handle_blink);
     }
+    vTaskDelete(NULL);
 }
 
 
 void app_main(void)
 {
-    xTaskCreate(TAskA, "TAskA",2048,NULL,5,NULL);
-    xTaskCreatePinnedToCore(TAskB, "TAskB",2048,NULL,5,NULL,0);
-    xTaskCreatePinnedToCore(TAskC, "TAskC",2048,NULL,5,NULL,1);
+    xTaskCreate(blink_task, "Blink_task",2048,NULL,5,&task_handle_blink);
+    xTaskCreate(control_task, "Control_task",2048,NULL,5,NULL);
 }

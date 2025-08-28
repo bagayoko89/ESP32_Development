@@ -11,15 +11,26 @@
 #include "freertos/task.h"
 #include "driver/gpio.h"
 
-#define LED_PIN 33
+#define LED1_PIN 33
+#define BUZZ_PIN 32
 
 void blink_task(void *pvParameters){
-    gpio_reset_pin(LED_PIN);
-    gpio_set_direction(LED_PIN, GPIO_MODE_OUTPUT);
+    gpio_reset_pin(LED1_PIN);
+    gpio_set_direction(LED1_PIN, GPIO_MODE_OUTPUT);
     while(1){
-        gpio_set_level(LED_PIN, 1);
+        gpio_set_level(LED1_PIN, 1);
+        vTaskDelay(pdMS_TO_TICKS(2000));
+        gpio_set_level(LED1_PIN, 0);
         vTaskDelay(pdMS_TO_TICKS(1000));
-        gpio_set_level(LED_PIN, 0);
+    }
+}
+void buzz_task(void *pvParameters){
+    gpio_reset_pin(BUZZ_PIN);
+    gpio_set_direction(BUZZ_PIN, GPIO_MODE_OUTPUT);
+    while(1){
+        gpio_set_level(BUZZ_PIN, 1);
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        gpio_set_level(BUZZ_PIN, 0);
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
@@ -28,5 +39,6 @@ void blink_task(void *pvParameters){
 void app_main(void)
 {
     xTaskCreate(blink_task, "BlinkTask",2048,NULL,5,NULL);
+    xTaskCreate(buzz_task, "BuzzaAsk",2048,NULL,2,NULL);
 
 }

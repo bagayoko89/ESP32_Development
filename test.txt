@@ -1,0 +1,5 @@
+In freeRTOS,
+core 0: is often used for Wi-Fi,Bluetooth and bacground tasks and also user tasks
+core 1: for user tasks, provessing-heavy code and application logic
+
+For day 3 Challenge, I observe the TaskA is running on Core 0

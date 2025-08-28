@@ -11,13 +11,30 @@
 #include "freertos/task.h"
 #include "driver/gpio.h"
 
-#define LED1_PIN 33
-#define BUZZ_PIN 32
+#define LED_PIN 33
 int i=0;
 
-void hello_task(void *pvParameters){
+void TAskA(void *pvParameters1){
     while(1){
-        printf("Hello from freeRTOS (count=%d)\n",i);
+        printf("Task running on Core %d\n",xPortGetCoreID());
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+}
+
+void TAskB(void *pvParameters2){
+    gpio_reset_pin(LED_PIN);
+    gpio_set_direction(LED_PIN, GPIO_MODE_OUTPUT);
+    while(1){
+        gpio_set_level(LED_PIN, 1);
+        vTaskDelay(pdMS_TO_TICKS(500));
+        gpio_set_level(LED_PIN, 0);
+        vTaskDelay(pdMS_TO_TICKS(500));
+    }
+}
+
+void TAskC(void *pvParameters3){
+    while(1){
+        printf("(count=%d)\n",i);
         vTaskDelay(pdMS_TO_TICKS(1000));
         i++;
     }
@@ -26,5 +43,7 @@ void hello_task(void *pvParameters){
 
 void app_main(void)
 {
-     xTaskCreate(hello_task, "HelloTask",2048,NULL,5,NULL);
+    xTaskCreate(TAskA, "TAskA",2048,NULL,5,NULL);
+    xTaskCreatePinnedToCore(TAskB, "TAskB",2048,NULL,5,NULL,0);
+    xTaskCreatePinnedToCore(TAskC, "TAskC",2048,NULL,5,NULL,1);
 }

@@ -1,50 +1,42 @@
-/* Blink Example
-
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-*/
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "driver/gpio.h"
 
 #define LED_PIN 33
-TaskHandle_t task_handle_blink = NULL;
 
-void blink_task(void *pvParameters){
-    int i=0;
-    gpio_reset_pin(LED_PIN);
-    gpio_set_direction(LED_PIN, GPIO_MODE_OUTPUT);
+void task_low(void *pvParameters){
     while(1){
-        gpio_set_level(LED_PIN, 1);
-        vTaskDelay(pdMS_TO_TICKS(500));
-        gpio_set_level(LED_PIN, 0);
-        vTaskDelay(pdMS_TO_TICKS(500));
-        printf("count=%d\n",i);
-        i++;
-        if(i>=10){
-            printf("Task deleting itself...\n");
-            vTaskDelete(NULL);
-        }
+        printf("Low priority task running on core %d\n",xPortGetCoreID());
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 
-void control_task(void *pvParameters3){
-    printf("control task running ...\n");
-    vTaskDelay(pdMS_TO_TICKS(5000));
-    if(task_handle_blink!=NULL){
-        printf("control task deleting blink Task ...\n");
-        vTaskDelete(task_handle_blink);
+void task_medium(void *pvParameters3){
+    while(1){
+        printf("Medium priority task running on core %d\n",xPortGetCoreID());
+        vTaskDelay(pdMS_TO_TICKS(500));
     }
-    vTaskDelete(NULL);
+}
+
+void task_high(void *pvParameters3){
+    int i=0;
+    while(1){
+        printf("High priority task running on core %d and count=%d\n",xPortGetCoreID(), i);
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        if(i>=4){
+            printf("Priority changed\n");
+            vTaskPrioritySet(NULL, 2);
+            i=0;
+        }
+        i++;
+    }
 }
 
 
 void app_main(void)
 {
-    xTaskCreate(blink_task, "Blink_task",2048,NULL,5,&task_handle_blink);
-    xTaskCreate(control_task, "Control_task",2048,NULL,5,NULL);
+    xTaskCreate(task_low, "LowPriority",2048,NULL,3,NULL);
+    xTaskCreate(task_medium, "MediumPriority",2048,NULL,5,NULL);
+    xTaskCreate(task_high, "HighPriority",2048,NULL,8,NULL);
 }

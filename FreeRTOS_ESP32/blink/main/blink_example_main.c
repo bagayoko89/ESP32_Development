@@ -27,18 +27,16 @@ QueueHandle_t queue;
 
 
 void producer_task(void *pv){
-    int count=0;
+    int count=1;
     while(1){
         if(xQueueSend(queue, &count, pdMS_TO_TICKS(100))==pdPASS){
             printf("Producer sent: %d\n", count);
             count++;
         } else {
             printf("Producer: Queue full!\n");
+            vTaskSuspend(NULL);
         }
-        if(count>=30){
-            count=0;
-        }
-        vTaskDelay(pdMS_TO_TICKS(500));
+        vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
 void consumer_task(void *pv){
@@ -49,6 +47,10 @@ void consumer_task(void *pv){
         } else {
             printf("Consumer: Queue empty!\n");
         }
+        if(value%2==0){
+            printf("The number is even\n");
+        }
+        else printf("The number is odd\n");
     }
 }
 

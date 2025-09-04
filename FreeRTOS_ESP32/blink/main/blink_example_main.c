@@ -34,7 +34,6 @@ void producer_task(void *pv){
             count++;
         } else {
             printf("Producer: Queue full!\n");
-            vTaskSuspend(NULL);
         }
         vTaskDelay(pdMS_TO_TICKS(1000));
     }

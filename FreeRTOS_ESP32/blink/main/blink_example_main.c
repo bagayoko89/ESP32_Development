@@ -19,46 +19,40 @@
 #include <inttypes.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "freertos/queue.h"
+#include "freertos/semphr.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
-#define QUEUE_LENGTH 5
-QueueHandle_t queue;
+#define TAG "DAY11"
+#define MAX_RESSOURCES 3
+
+SemaphoreHandle_t ressource_sem;
 
 
-void producer_task(void *pv){
-    int count=1;
+void worker_task(void *pvParameters){
+    int id = (int) pvParameters;
+
     while(1){
-        if(xQueueSend(queue, &count, pdMS_TO_TICKS(100))==pdPASS){
-            printf("Producer sent: %d\n", count);
-            count++;
-        } else {
-            printf("Producer: Queue full!\n");
+        if(xSemaphoreTake(ressource_sem, portMAX_DELAY)){
+            printf("Task %d acquired resource\n", id);
+            vTaskDelay(pdMS_TO_TICKS(2000));
+            printf("Task %d releasing resource\n", id);
+            xSemaphoreGive(ressource_sem);
+
         }
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
-void consumer_task(void *pv){
-    int value;
-    while(1){
-        if(xQueueReceive(queue,&value, pdMS_TO_TICKS(1000))==pdPASS){
-            printf("Consumer received: %d\n",value);
-        } else {
-            printf("Consumer: Queue empty!\n");
-        }
-        if(value%2==0){
-            printf("The number is even\n");
-        }
-        else printf("The number is odd\n");
-    }
-}
 
 void app_main(void){
-    queue=xQueueCreate(QUEUE_LENGTH, sizeof(int));
-    if(queue==NULL){
-        printf("Failed to create queue\n");
+    ressource_sem=xSemaphoreCreateCounting(MAX_RESSOURCES, MAX_RESSOURCES);
+    if(ressource_sem==NULL){
+        printf("Failed to create counting semaphore\n");
         return;
     }
-    xTaskCreate(producer_task, "Producer", 2048, NULL, 5, NULL);
-    xTaskCreate(consumer_task, "Consumer", 2048, NULL, 5, NULL);
+
+    for(int i=1; i<5;i++){
+        char task_name[16];
+        sprintf(task_name, "Worker%d", i);
+        xTaskCreate(worker_task, task_name, 2048, (void *)i, 5, NULL);
+    }
 }

@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "event_group",
-    "project_version":    "6cac088-dirty",
+    "project_version":    "b0ed7b7-dirty",
     "project_path":       "C:/Users/DELL/Desktop/ESP32_Development/event_group",
     "idf_path":           "C:/Users/DELL/esp/v5.5/esp-idf",
     "build_dir":          "C:/Users/DELL/Desktop/ESP32_Development/event_group/build",

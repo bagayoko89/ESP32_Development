@@ -1,4 +1,4 @@
-/* * Data converted from C:/Users/DELL/esp/v5.5/esp-idf/examples/get-started/hello_world/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from C:/Users/DELL/Desktop/ESP32_Development/event_group/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 #if !defined (__APPLE__) && !defined (__linux__)

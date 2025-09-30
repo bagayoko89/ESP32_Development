@@ -10,18 +10,18 @@ if(NOT EXISTS "C:/Users/DELL/esp/v5.5/esp-idf/components/bootloader/subproject")
   file(MAKE_DIRECTORY "C:/Users/DELL/esp/v5.5/esp-idf/components/bootloader/subproject")
 endif()
 file(MAKE_DIRECTORY
-  "C:/Users/DELL/esp/v5.5/esp-idf/examples/get-started/hello_world/build/bootloader"
-  "C:/Users/DELL/esp/v5.5/esp-idf/examples/get-started/hello_world/build/bootloader-prefix"
-  "C:/Users/DELL/esp/v5.5/esp-idf/examples/get-started/hello_world/build/bootloader-prefix/tmp"
-  "C:/Users/DELL/esp/v5.5/esp-idf/examples/get-started/hello_world/build/bootloader-prefix/src/bootloader-stamp"
-  "C:/Users/DELL/esp/v5.5/esp-idf/examples/get-started/hello_world/build/bootloader-prefix/src"
-  "C:/Users/DELL/esp/v5.5/esp-idf/examples/get-started/hello_world/build/bootloader-prefix/src/bootloader-stamp"
+  "C:/Users/DELL/Desktop/ESP32_Development/event_group/build/bootloader"
+  "C:/Users/DELL/Desktop/ESP32_Development/event_group/build/bootloader-prefix"
+  "C:/Users/DELL/Desktop/ESP32_Development/event_group/build/bootloader-prefix/tmp"
+  "C:/Users/DELL/Desktop/ESP32_Development/event_group/build/bootloader-prefix/src/bootloader-stamp"
+  "C:/Users/DELL/Desktop/ESP32_Development/event_group/build/bootloader-prefix/src"
+  "C:/Users/DELL/Desktop/ESP32_Development/event_group/build/bootloader-prefix/src/bootloader-stamp"
 )
 
 set(configSubDirs )
 foreach(subDir IN LISTS configSubDirs)
-    file(MAKE_DIRECTORY "C:/Users/DELL/esp/v5.5/esp-idf/examples/get-started/hello_world/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
+    file(MAKE_DIRECTORY "C:/Users/DELL/Desktop/ESP32_Development/event_group/build/bootloader-prefix/src/bootloader-stamp/${subDir}")
 endforeach()
 if(cfgdir)
-  file(MAKE_DIRECTORY "C:/Users/DELL/esp/v5.5/esp-idf/examples/get-started/hello_world/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
+  file(MAKE_DIRECTORY "C:/Users/DELL/Desktop/ESP32_Development/event_group/build/bootloader-prefix/src/bootloader-stamp${cfgdir}") # cfgdir has leading slash
 endif()

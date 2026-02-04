@@ -16,5 +16,6 @@
     "--query-driver=**",
     "--compile-commands-dir=c:\\Users\\DELL\\Desktop\\ESP32_Development\\wifi_scanner\\build"
   ],
-  "idf.flashType": "UART"
+  "idf.flashType": "UART",
+  "idf.currentSetup": "C:\\Users\\DELL\\esp\\v5.5\\esp-idf"
 }
